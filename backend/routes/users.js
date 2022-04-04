@@ -1,5 +1,5 @@
 const express = require("express");
-const { getRepository, getConnection } = require("typeorm");
+const { getRepository } = require("typeorm");
 const User = require("../entities/user");
 const router = express.Router();
 
