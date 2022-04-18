@@ -1,8 +1,8 @@
 const express = require("express");
 const logger = require("morgan");
 const cors = require("cors");
+const path = require("path");
 const typeorm = require("typeorm");
-const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 const routeNotFoundJsonHandler = require("./services/routeNotFoundJsonHandler");
 const jsonErrorHandler = require("./services/jsonErrorHandler");
@@ -16,8 +16,14 @@ typeorm.createConnection().then(() => {
   app.use(express.urlencoded({ extended: false }));
 
   // Register routes
-  app.use("/", indexRouter);
   app.use("/users", usersRouter);
+
+  // Register frontend
+  const publicPath = path.join(__dirname, "public");
+  app.use(express.static(publicPath));
+  app.get("*", (req, res) => {
+    res.sendFile(path.join(publicPath, "index.html"));
+  });
 
   // Register 404 middleware and error handler
   app.use(routeNotFoundJsonHandler); // this middleware must be registered after all routes to handle 404 correctly
