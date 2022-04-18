@@ -16,12 +16,12 @@ typeorm.createConnection().then(() => {
   app.use(express.urlencoded({ extended: false }));
 
   // Register routes
-  app.use("/users", usersRouter);
+  app.use("/api/users", usersRouter);
 
   // Register frontend
   const publicPath = path.join(__dirname, "public");
   app.use(express.static(publicPath));
-  app.get("/frontend", (req, res) => {
+  app.get("*", (req, res) => {
     res.sendFile(path.join(publicPath, "index.html"));
   });
 
